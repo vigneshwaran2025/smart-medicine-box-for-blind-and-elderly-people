@@ -1,0 +1,39 @@
+import pyttsx3
+import schedule
+import time
+from datetime import datetime
+
+# Initialize text-to-speech engine
+engine = pyttsx3.init()
+
+def speak(text):
+    print("Speaking:", text)
+    engine.say(text)
+    engine.runAndWait()
+
+# Medicine schedule (time: medicine name)
+medicine_schedule = {
+    "08:00": "Take blood pressure tablet",
+    "13:00": "Take diabetes medicine",
+    "20:00": "Take night medicine"
+}
+
+def remind_medicine(medicine_name):
+    speak(f"Reminder: {medicine_name}")
+    speak("Please press the button after taking your medicine")
+
+    # Simulate button press (replace with GPIO input if using Raspberry Pi)
+    taken = input("Press Enter after taking medicine...")
+
+    speak("Thank you. Stay healthy!")
+
+# Schedule all medicines
+for time_str, med in medicine_schedule.items():
+    schedule.every().day.at(time_str).do(remind_medicine, med)
+
+speak("Smart medicine box is now active")
+
+# Main loop
+while True:
+    schedule.run_pending()
+    time.sleep(1)
